@@ -1,0 +1,2139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" version="4.0">
+  <display-name>New_Inventary</display-name>
+ <absolute-ordering></absolute-ordering>
+<servlet>
+<servlet-name>spring</servlet-name>
+<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+<load-on-startup>1</load-on-startup>
+</servlet>
+
+<servlet-mapping>
+<servlet-name>spring</servlet-name>
+<url-pattern>/</url-pattern>
+
+</servlet-mapping>
+
+</web-app>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:mvc="http://www.springframework.org/schema/mvc"  
+    xsi:schemaLocation="  
+        http://www.springframework.org/schema/beans  
+        http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://www.springframework.org/schema/context  
+        http://www.springframework.org/schema/context/spring-context.xsd  
+        http://www.springframework.org/schema/mvc  
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd"> 
+        
+        
+        
+        <context:component-scan base-package="com.employee"></context:component-scan>
+        <mvc:annotation-driven></mvc:annotation-driven>
+        
+        
+        
+         <mvc:resources location="/assets/" mapping="/assets/**" cache-period="31556926"></mvc:resources>
+        
+          <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+          
+          
+     <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+     <property name="url" value="jdbc:mysql://localhost:3306/assignment_employee"></property>
+     <property name="username" value="root"></property>
+     <property name="password" value=""></property>
+    </bean>
+    
+    
+    
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+     <property name="dataSource" ref="dataSource"></property>
+    </bean> 
+
+ <bean id="dao" class="com.employee.Maindao">
+  <property name="jdbcTemplate" ref="jdbcTemplate"></property>
+ </bean>
+   <bean id="viewResolver"
+        class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
+        <property name="prefix">
+            <value>/WEB-INF/Page/</value>
+        </property>
+
+        <property name="suffix">
+            <value>.jsp</value>
+        </property>
+    </bean>
+        
+        
+        
+        </beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------LogIN-----------------------------------------------------
+
+
+
+
+<style type="text/css">
+
+
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display:400,900|Poppins:400,500');
+	* {
+	  margin: 0;
+	  padding: 0;
+	  text-decoration: none;
+	  box-sizing: border-box;
+	}
+	body {
+	  margin: 0;
+	  padding: 0;
+	  background: #f6f6f6;
+	  font-family: 'Poppins', sans-serif;
+	  overflow-x: hidden;
+	  height: 100vh;
+	  margin: auto;
+	  display: flex;
+	}
+
+	img {
+		max-width: 100%;
+	}
+
+	.app {
+	  background-color: #fff;
+	  width: 330px;
+	  height: 570px;
+	  margin: 2em auto;
+	  border-radius: 5px;
+	  padding: 1em;
+	  position: relative;
+	  overflow: hidden;
+	  box-shadow: 0 6px 31px -2px rgba(0, 0, 0, .3);
+	}
+
+	a {
+		text-decoration: none;
+		color: #257aa6;
+	}
+
+	p {
+		font-size: 13px;
+		color: #333;
+		line-height: 2;
+	}
+		.light {
+			text-align: right;
+			color: #fff;
+		}
+			.light a {
+				color: #fff;
+			}
+
+	.bg {
+		width: 400px;
+		height: 550px;
+		background: #257aa6;
+		position: absolute;
+		top: -5em;
+		left: 0;
+		right: 0;
+		margin: auto;
+		background-image: url("background.jpg");
+		background-position: center;
+		background-size: cover;
+		background-repeat: no-repeat;
+		clip-path: ellipse(69% 46% at 48% 46%);
+	}
+
+	form {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		width: 100%;
+		text-align: center;
+		padding: 2em;
+	}
+
+	header {
+	    width: 220px;
+	    height: 220px;
+	    margin: 1em auto;
+	  }
+
+	form input {
+	    width: 100%;
+	    padding: 13px 15px;
+	    margin: 0.7em auto;
+	    border-radius: 100px;
+	    border: none;
+	    background: rgb(255,255,255,0.3);
+	    font-family: 'Poppins', sans-serif;
+	    outline: none;
+	    color: #fff;
+	}
+	input::placeholder {
+	    color: #fff;
+	    font-size: 13px;
+	}
+
+	.inputs {
+		margin-top: -4em;
+	}
+
+	footer {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding: 2em;
+		text-align: center;
+	}
+
+	button {
+		width: 100%;
+	    padding: 13px 15px;
+	    border-radius: 100px;
+	    border: none;
+	    background: #257aa6;
+	    font-family: 'Poppins', sans-serif;
+	    outline: none;
+	    color: #fff;
+	}
+	
+	@media screen and (max-width: 640px) {
+			.app {
+				width: 100%;
+				height: 100vh;
+				border-radius: 0;
+			}
+
+			.bg {
+				top: -7em;
+				width: 450px;
+				height: 95vh;
+			}
+			header {
+				width: 90%;
+				height: 250px;
+			}
+			.inputs {
+				margin: 0;
+			}
+			input, button {
+				padding: 18px 15px;
+			}
+		}
+
+</style>
+
+
+
+
+<div class="app">
+
+		<div class="bg"></div>
+
+		<form action="AdminLogin" method="post">
+			<header>
+				<img src="https://assets.codepen.io/3931482/internal/avatars/users/default.png?format=auto&height=80&version=1592223909&width=80">
+			</header>
+
+			<div class="inputs">
+				<input type="text" name="username" placeholder="username or email">
+				<input type="password" name="password" placeholder="password">
+
+				<p class="light"><a href="#">Forgot password?</a></p>
+			</div>
+			
+			<br>  <br> <br>
+	<button type="submit">Continue</button>
+	<p>Don't have an account? <a href="#">Sign Up</a></p>
+		</form>
+
+		
+
+	</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------Home ----------------------------------------------------
+
+
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+  <meta charset="UTF-8">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue-red.min.css">
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+		
+	
+		
+		
+
+
+<style type="text/css">
+
+html, body, .page-content {
+  background-color: #ecf0f1;
+  overflow: hidden;
+}
+
+.title {
+  display: block;
+  float: none;
+  margin-top: 35px;
+  text-align: center;
+  font-family: "Open Sans", sans-serif;
+  font-size: 36px;
+  color: #c0392b;
+  font-weight: 600;
+}
+
+.name {
+  display: block;
+  float: none;
+  margin-top: -10px;
+  text-align: center;
+  font-family: "Open Sans", sans-serif;
+  font-size: 2.5vmin;
+  color: #888;
+  font-weight: 600;
+}
+
+.navigation {
+  width: 20%;
+  height: 100%;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  background-color: #111;
+  overflow: hidden;
+}
+
+.profile-pic {
+  width: 60px;
+  height: 60px;
+  border-radius: 100%;
+  border: 2px solid #222;
+  float: none;
+  display: block;
+  margin: 25px auto;
+  pointer-events: none;
+}
+
+.function-wrapper {
+  width: 130px;
+  float: none;
+  display: block;
+  margin: auto;
+}
+
+.function {
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border: none;
+  color: #333;
+  transition: all ease-in-out 0.35s;
+  outline: none;
+}
+
+#profile, #settings, #logout {
+  cursor: pointer;
+}
+
+.function:hover {
+  background-color: transparent;
+  border: none;
+  color: #666;
+}
+
+.options-wrapper {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  margin-top: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.panel-option {
+  border-left: 3px solid #333;
+  height: 40px;
+  overflow: hidden;
+  color: #333;
+  opacity: 0.75;
+  cursor: pointer;
+}
+
+.panel-option:hover {
+  opacity: 1;
+}
+
+.active {
+  border-left-color: #e74c3c;
+  color: #777;
+}
+
+.panel-option .material-icons {
+  margin-left: 15px;
+  margin-top: 7px;
+  float: left;
+  display: inline-block;
+}
+
+.panel-option p {
+  margin-left: 15px;
+  margin-top: 7px;
+  float: left;
+  font-size: 2vmin;
+  display: inline-block;
+}
+
+.page-content {
+  background-color: #fff;
+  width: 80%;
+  height: 100vh;
+  float: right;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.header {
+  width: 100%;
+  height: 85px;
+  background-color: #222;
+}
+
+.big {
+  float: left;
+  font-size: 28px;
+  margin-top: 33px;
+  margin-left: 20px;
+  font-weight: 500;
+  color: #FFF;
+}
+
+.small {
+  font-weight: 300;
+  font-size: 12px;
+  margin-left: 5px;
+  color: #999;
+}
+
+#wrapper {
+  float: right;
+  width: auto;
+  margin-right: 15px;
+  margin-top: 30px;
+}
+
+.search {
+  width: 140px;
+  height: 34px;
+  border-radius: 4px 0px 0px 4px;
+  border: none;
+  padding: 5px 10px;
+  font-family: "Open Sans", sans-serif;
+  outline: none;
+  float: left;
+}
+
+.search-btn {
+  width: 34px;
+  height: 34px;
+  background-color: white;
+  color: #666;
+  border-radius: 0px 4px 4px 0px;
+  border: none;
+  padding: 5px;
+  font-family: "Open Sans", sans-serif;
+  outline: none;
+  float: left;
+  margin-right: 5px;
+}
+
+.search-btn:hover {
+  background-color: #f4f4f4;
+  cursor: pointer;
+}
+
+.help {
+  width: auto;
+  height: 34px;
+  background-color: #f39c12;
+  color: #fff;
+  border-radius: 4px;
+  border: none;
+  padding: 5px;
+  font-family: "Open Sans", sans-serif;
+  outline: none;
+  float: left;
+  margin-right: 0px;
+}
+
+.help:hover {
+  background-color: #ffb140;
+  cursor: pointer;
+}
+
+.content {
+  background-color: #FFF;
+  width: 100%;
+  height: calc(100vh - 85px);
+  margin-top: 0px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+@media screen and (max-width: 780px) {
+  .page-content {
+    overflow: hidden !important;
+  }
+  .big {
+    font-size: 4vmin;
+    margin-top: 25px;
+  }
+  
+  .small {
+    display: block;
+    margin-left: 0px;
+    font-size: 2vmin;
+  }
+  
+  .content {
+    height: calc(100vh - 92px);
+  }
+  
+  .navigation {
+    width: 25%;
+  }
+  
+  .page-content {
+    width: 75%;
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .navigation {
+    width: 60px;
+  }
+  
+  .big {
+    font-size: 4vmin;
+    margin-top: 15px;
+  }
+  
+  .title {
+    margin-top: 10px;
+    font-size: 20px;
+  }
+  
+  .profile-pic {
+    width: 70%;
+    height: auto;
+    margin-top: 10px;
+  }
+  
+  .name {
+    display: none;
+  }
+  
+  .function-wrapper {
+    width: 100%;
+    height: auto;
+  }
+  
+  .function {
+    display: block;
+    float: none;
+    margin: 5px auto;
+  }
+  
+  .panel-option p {
+    display: none;
+  }
+  
+  .page-content {
+    width: calc(100% - 60px);
+  }
+  
+  .header {
+    height: 70px;
+  }
+  
+  #wrapper {
+    margin-top: 20px;
+  }
+  
+  .content {
+    height: calc(100% - 70px);
+  }
+}
+
+@media screen and (max-width: 440px) {
+  .header {
+    height: 110px;
+  }
+  
+  .small {
+    display: none;
+  }
+  
+  .big {
+    margin-top: 70px;
+    margin-bottom: 0px;
+    font-size: 6vmin;
+  }
+  
+  .content {
+    height: calc(100% - 110px);
+  }
+  
+  #wrapper {
+    position: absolute;
+    top: 0px;
+    rigth: 0px;
+    width: 100%;
+    height 36px;
+  }
+  
+  .search {
+    width: calc(100% - 160px);
+    margin-left: 15px;
+  }
+}
+
+
+
+/* For Empyee Form  */
+
+
+	.palel-primary
+	{
+		border-color: #bce8f1;
+	}
+	.panel-primary>.panel-heading
+	{
+		background:#bce8f1;
+		
+	}
+	.panel-primary>.panel-body
+	{
+		background-color: #EDEDED;
+	}
+		
+
+
+
+</style>
+
+</head>
+
+<script type="text/javascript">
+
+$(window).on("load",function(){
+	
+	$("#attendance_id").show();
+	$("#Employee_id").hide();
+	$("#Designation").hide();
+	$("#EmpForm_id").hide();
+	
+	
+}); 
+
+
+$(document).ready(function(){
+	
+	$("#attendanceform").click(function(){
+
+		$("#attendance_id").show();
+		$("#Employee_id").hide();
+		$("#Designation").hide();
+		$("#EmpForm_id").hide();
+	
+		
+	});
+
+});
+
+$(document).ready(function(){
+	
+	$("#employee").click(function(){
+		
+		$("#attendance_id").hide();
+		$("#Employee_id").show();
+		$("#Designation").hide();
+		$("#EmpForm_id").hide();
+
+		
+	});
+
+});
+
+$(document).ready(function(){
+	
+	$("#salaryform").click(function(){
+		
+		$("#attendance_id").hide();
+		$("#Employee_id").hide();
+		$("#Designation").show();
+		$("#EmpForm_id").hide();
+	
+		
+	});
+
+});
+
+$(document).ready(function(){
+	
+	$("#empform").click(function(){
+		
+		$("#attendance_id").hide();
+		$("#Employee_id").hide();
+		$("#Designation").hide();
+		$("#EmpForm_id").show();
+	
+	});
+
+});
+
+
+
+
+</script>
+
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+	  
+	  $("#designation").blur(function(){
+		  
+		  var a= $("#designation").val();
+	if(a=="developer")
+		{
+		$("#salary").val("30000");
+		}
+	if (a=="hr") {
+		$("#salary").val("25000");
+	}
+	if (a=="sysetem_engineer") {
+		$("#salary").val("20000");
+			} 
+	if (a=="manager") {
+		$("#salary").val("50000");
+	}
+
+			
+	
+});
+	});
+</script>
+
+<body>
+  <section class="navigation">
+    <p class="title">
+  My Company
+    <p>
+      
+   <br> <br>
+    <p class="name">
+    Admin
+    <p>
+      
+      <div class="function-wrapper">
+      <button id="profile" class="function"><i class="material-icons">account_circle</i></button>
+        <div class="mdl-tooltip" for="profile">
+        Profile
+        </div>
+        
+      <button id="settings" class="function"><i class="material-icons">settings</i></button>
+        <div class="mdl-tooltip" for="settings">
+        Settings
+        </div>
+        
+        <a href="LogOut">
+      <button id="logout" class="function"><i class="material-icons">clear</i></button>
+    </a>    <div class="mdl-tooltip" for="logout">
+       Log out
+        </div> 
+    </div>
+    
+    <div  class="options-wrapper">
+      <div id="attendanceform" class="panel-option active">
+        <i class="material-icons">computer</i>
+        <p>Attendance</p>
+      </div>
+      
+      <div id="employee" class="panel-option">
+        <i class="material-icons">account_box</i>
+        <p>Employee's</p>
+      </div>
+      
+      <div id="salaryform" class="panel-option">
+        <i class="material-icons">pie_chart</i>
+        <p>Salary</p>
+      </div>
+      
+      <div id="empform" class="panel-option">
+        <i  class="material-icons">receipt</i>
+        <p>Employee Form</p>
+      </div>
+      
+      <div id="logout" class="panel-option"> <a href="LogOut">
+        <i class="material-icons">info</i>
+        <p>Log Out</p> </a>
+      </div>
+  </div>
+  </section>
+      
+      <section class="page-content"> 
+        <div class="header"> 
+          <p class="big">Salary Attendance System <span class="small">We Calculate Salary to the basis of Attendance</span></p>
+          
+          <div id="wrapper">
+          <input class="search" type="search" placeholder="search...">
+          <button class="search-btn">
+            <i class="material-icons">search</i>
+          </button>
+            
+            <button id="help" class="help">
+            <i class="material-icons">help</i>
+            </button>
+            
+            <div class="mdl-tooltip" for="help">
+            Help
+            </div>
+          </div>
+        </div>
+        
+        <div class="content">
+         
+         <div id="attendance_id">
+
+   <table class="table">
+    <thead>
+      <tr>
+        <th>Emp Id</th>
+        <th>Name</th>
+          <th>Days Present</th>
+         <th>Days Absent</th>
+            <th>Month Salary</th>
+      </tr>
+    </thead>
+    <tbody>
+    <c:forEach var="slist" items="${slist}">
+      <tr>
+        <td>${slist.empname}</td>
+        <td>${slist.empname}</td>
+        <td>${slist.daypresent}</td>
+         <td>${slist.dayabsent}</td>
+          <td>${slist.salary}</td>
+      </tr>
+      </c:forEach>
+   
+    </tbody>
+  </table>
+
+
+</div>
+         
+         
+         <div id="Employee_id"> 
+        <table class="table">
+    <thead>
+      <tr>
+        <th>Emp Id</th>
+        <th>Name</th>
+        <th>Designation</th>
+         <th>Salary</th>
+      </tr>
+    </thead>
+    <tbody>
+    <c:forEach var="elist" items="${elist}">
+      <tr>
+        <td>${elist.empname}</td>
+        <td>${elist.empname}</td>
+        <td>${elist.designation}</td>
+          <td>${elist.salary}</td>
+      </tr>
+      </c:forEach>
+   
+    </tbody>
+  </table>
+  </div>
+         
+         
+         <div id="Designation"> <table class="table">
+    <thead>
+      <tr>
+        <th>Emp Id</th>
+        <th>Name</th>
+            <th>Month Salary</th>
+      </tr>
+    </thead>
+    <tbody>
+    <c:forEach var="slist" items="${slist}">
+      <tr>
+        <td>${slist.empname}</td>
+        <td>${slist.empname}</td>
+          <td>${slist.salary}</td>
+      </tr>
+      </c:forEach>
+   
+    </tbody>
+  </table></div>
+         
+         <div id="EmpForm_id">
+
+			   <div class="container">    
+            
+    <div id="signupbox" style=" margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="panel-title"><a href="index.jsp">Log In</a></div>
+                <div style="float:right; font-size: 85%; position: relative; top:-10px"><a id="signinlink" href="index.jsp">Log In</a></div>
+            </div>  
+            <div class="panel-body" >
+              
+                    <input type='hidden' name='csrfmiddlewaretoken' value='XFe2rTYl9WOpV8U6X5CfbIuOZOELJ97S' />
+                            
+
+                    <form  action="SaveEmpRegistration"  method="post" >
+                        
+                          <div id="div_id_username" class="form-group required">
+                            <label for="id_username" class="control-label col-md-4  requiredField">Emp Id<span class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <input class="input-md  textinput textInput form-control" id="id_username" maxlength="30" name="empid" placeholder="Enter Employee id" style="margin-bottom: 10px" type="text" />
+                            </div>
+                        </div>
+                        
+                          <div id="div_id_username" class="form-group required">
+                            <label for="id_username" class="control-label col-md-4  requiredField"> Emp Name<span class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <input class="input-md  textinput textInput form-control" id="id_username" maxlength="30" name="empname" placeholder="Enter Name" style="margin-bottom: 10px" type="text" />
+                            </div>
+                        </div>
+                        
+                    
+                        
+                          <div id="div_id_username" class="form-group required">
+                            <label for="id_username" class="control-label col-md-4  requiredField">Designation<span class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                            
+                              <select  id="designation" name="designation" class="textinput textInput form-control form-select" aria-label="Default select example">
+ 									 <option selected>select designation</option>
+ 													 <option value="hr">HR</option>
+ 													 <option value="developer">Developer</option>
+													  <option value="manager">Manager</option>
+													  <option value="sysetem_engineer">System Engineer</option>		  
+									</select>
+                            
+                                      </div>
+                        </div>
+         
+         	<br> <br>
+           <br> <br>
+       
+               <div id="div_id_username" class="form-group required">
+                            <label for="id_username" class="control-label col-md-4  requiredField">Salary<span class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <input readonly="readonly" class="input-md  textinput textInput form-control" id="salary" maxlength="30" name="salary" placeholder="Enter Salary" style="margin-bottom: 10px" type="text" />
+                            </div>
+                        </div>
+                        
+         				<br> <br>
+           <br> <br>
+           
+           
+                        <div class="form-group"> 
+                            <div class="form-group"> 
+                            <div class="aab controls col-md-4 "></div>
+                            <div class="controls col-md-8 ">
+                                <input type="submit" name="registration" value="Register" class="btn btn-primary btn btn-info" id="submit-id-signup" />
+                               &nbsp; &nbsp;  <input type="button" name="Signup" value="Exit" class="btn btn btn-primary" id="button-id-signup" />
+                            </div>
+                        </div> 
+                         
+                        </div> 
+                          </form>
+                       <br> <br>
+                       
+                
+                            
+            
+            </div>
+        </div>
+    </div> 
+</div>
+
+
+</div>
+         
+      
+         
+         
+        
+                </div>
+      </section>
+</body>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------Serch Table With Button------------------------------------------------------
+
+
+ <input class="form-control" id="myInputst" type="text" placeholder="Search..">
+  <br>
+  <table class="table table-bordered">
+    <thead class="table-primary">
+      <tr>
+         <th scope="col">Id</th>
+			      <th scope="col">Name</th>
+			      <th scope="col">Email</th>
+			      <th scope="col">UserName</th>
+			      <th scope="col">Password</th>
+			      <th scope="col">Gender</th>
+			      <th scope="col">SSC %</th>
+			      <th scope="col">HSC %</th>
+			      <th scope="col">Mobile No</th>
+			      <th scope="col">Address</th>
+			      <th scope="col">DOB</th>
+			      <th scope="col">Course</th>
+			      <th scope="col">Edit</th>
+			      <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody id="myTablest">
+   	<c:forEach var="st" items="${student}">  
+				 <tr>
+			   
+			      <td>${st.c_id}</td>
+			      <td>${st.name}</td>
+			      <td>${st.email}</td>
+			      <td>${st.username}</td>
+			      <td>${st.password}</td>
+			      <td>${st.gender}</td> 
+			      <td>${st.ssc}</td>
+			      <td>${st.hsc}</td>
+			      <td>${st.mobile_no}</td>
+			      <td>${st.address}</td>
+			      <td>${st.birth_date}</td>
+			      <td>${st.course}</td>
+			      
+			   
+		
+			   	 <td> <a href="editstudent/${st.username}"> <button type="button" class="btn"><i class="fas fa-edit"></i></button></a> </td> 
+			   	 <td> <a href="Deletestudent/${st.username}"> <button type="button" class="btn"><i class="far fa-trash-alt" ></i></button></a> </td> 
+			    
+			    </tr>
+				
+				</c:forEach>
+    </tbody>
+  </table>
+  
+  <script>
+$(document).ready(function(){
+  $("#myInputst").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTablest tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------Registation ------------------------------------------------------------------------
+
+
+
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<style type="text/css">
+
+.bg-navel{
+    background-color:#40739e;
+}
+
+.border-navel{
+    border-color:#40739e;
+}
+
+.btn-navel{
+    background-color:#40739e;
+}
+</style>
+</head>
+<body>	
+<div align="center" style="margin-top: 40px">
+  <div class="col-md-6 col-lg-5" align="left">
+            <div class="card border-navel shadow">
+                <div class="card-header text-center bg-navel border-danger">
+                    <h3 class="font-weight-bold text-white">Registration</h3>
+                </div>
+
+                <div class="card-body mt-2 mb-2">
+                    <form action="saveRegistration" method="post">
+                       <div class="form-group">
+                            <label for="username" class="col-md-4 col-form-label text-md-left">User Name</label>
+
+                                <input id="username" type="text" class="form-control col-md-12"  name="username" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email" class="col-md-4 col-form-label text-md-left">E-Mail</label>
+
+                                <input id="email" type="email" class="form-control col-md-12"  name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password" class="col-md-4 col-form-label text-md-left">Password</label>
+
+                                <input id="password" type="password" class="form-control col-md-12" name="password" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmPassword" class="col-md-6 col-form-label text-md-left">Confirm Password</label>
+
+                                <input id="confirmPassword" type="password" class="form-control col-md-12" name="confirmPassword" required>
+                        </div>
+
+                      
+
+                            <div class=" text-center mt-2">
+                                <button type="submit" class="btn btn-navel text-light col-md-5">
+                                  Registration
+                                </button>
+                            </div>
+                            <div class="text-center">
+                                    <a class="btn btn-link" href="index.jsp">
+                                       Login Here If You Account?
+                                    </a>
+                            </div>
+                    </form>
+                </div>
+            </div>
+            </div></div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------Emplyee Form ------------------------------------------------------
+
+
+
+
+     <div class="container">    
+            
+    <div id="signupbox" style=" margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="panel-title"><a href="index.jsp">Log In</a></div>
+                <div style="float:right; font-size: 85%; position: relative; top:-10px"><a id="signinlink" href="index.jsp">Log In</a></div>
+            </div>  
+            <div class="panel-body" >
+              
+                    <input type='hidden' name='csrfmiddlewaretoken' value='XFe2rTYl9WOpV8U6X5CfbIuOZOELJ97S' />
+                            
+
+                    <form  action="SaveEmpRegistration"  method="post" >
+                        
+                          <div id="div_id_username" class="form-group required">
+                            <label for="id_username" class="control-label col-md-4  requiredField">Emp Id<span class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <input class="input-md  textinput textInput form-control" id="id_username" maxlength="30" name="empid" placeholder="Enter Employee id" style="margin-bottom: 10px" type="text" />
+                            </div>
+                        </div>
+                        
+                          <div id="div_id_username" class="form-group required">
+                            <label for="id_username" class="control-label col-md-4  requiredField"> Emp Name<span class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <input class="input-md  textinput textInput form-control" id="id_username" maxlength="30" name="name" placeholder="Enter Name" style="margin-bottom: 10px" type="text" />
+                            </div>
+                        </div>
+                        
+                          <div id="div_id_username" class="form-group required">
+                            <label for="id_username" class="control-label col-md-4  requiredField"> Emp Address<span class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <input class="input-md  textinput textInput form-control" id="id_username" maxlength="30" name="address" placeholder="Enter Address" style="margin-bottom: 10px" type="text" />
+                            </div>
+                        </div>
+                        
+                          <div id="div_id_username" class="form-group required">
+                            <label for="id_username" class="control-label col-md-4  requiredField"> Mobile No.<span class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <input class="input-md  textinput textInput form-control" id="id_username" maxlength="10" name="mobile" placeholder="Enter Mobile No." style="margin-bottom: 10px" type="text" />
+                            </div>
+                        </div>
+                        
+                         <div id="div_id_gender" class="form-group required">
+                            <label for="id_gender"  class="control-label col-md-4  requiredField"> Gender<span class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 "  style="margin-bottom: 10px">
+                                 <label class="radio-inline"> <input type="radio" name="gender" id="id_gender_1" value="M"  style="margin-bottom: 10px">Male</label>
+                                 <label class="radio-inline"> <input type="radio" name="gender" id="id_gender_2" value="F"  style="margin-bottom: 10px">Female </label>
+                            </div>
+                        </div>
+                        
+                          <div id="div_id_username" class="form-group required">
+                            <label for="id_username" class="control-label col-md-4  requiredField"> Basic Salary<span class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <input class="input-md  textinput textInput form-control" id="bsalary" maxlength="30" name="bsalary" placeholder="Enter Your Salary" style="margin-bottom: 10px" type="text" />
+                            </div>
+                        </div>
+                        
+                            <div id="div_id_username" class="form-group required">
+                            <label for="id_username" class="control-label col-md-4  requiredField"> HRA<span class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <input class="input-md  textinput textInput form-control" id="hra" maxlength="10" name="hra" placeholder="Enter HRA" style="margin-bottom: 10px" type="text" />
+                            </div>
+                        </div>
+                        
+                            <div id="div_id_username" class="form-group required">
+                            <label for="id_username" class="control-label col-md-4  requiredField"> DA<span class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <input class="input-md  textinput textInput form-control" id="da" maxlength="10" name="da" placeholder="Enter DA" style="margin-bottom: 10px" type="text" />
+                            </div>
+                        </div>
+                        
+                            <div id="div_id_username" class="form-group required">
+                            <label for="id_username" class="control-label col-md-4  requiredField"> Total<span class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <input class="input-md  textinput textInput form-control" id="total" maxlength="10" name="total" placeholder="Total" style="margin-bottom: 10px" type="text" />
+                            </div>
+                        </div>
+                        
+                    
+                            <div id="div_id_username" class="form-group required">
+                            <label for="id_username" class="control-label col-md-4  requiredField"> Provident Fund<span class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <input class="input-md  textinput textInput form-control" id="pf" maxlength="10" name="pf" placeholder="Enter Provident Fund" style="margin-bottom: 10px" type="text" />
+                            </div>
+                        </div>
+                        
+                        <div id="div_id_username" class="form-group required">
+                            <label for="id_username" class="control-label col-md-4  requiredField"> P Tax<span class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <input class="input-md  textinput textInput form-control" id="ptax" maxlength="10" name="ptax" placeholder="Enter Profession Tax" style="margin-bottom: 10px" type="text" />
+                            </div>
+                        </div>
+                        
+                           <div id="div_id_username" class="form-group required">
+                            <label for="id_username" class="control-label col-md-4  requiredField">I Tax<span class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <input class="input-md  textinput textInput form-control" id="itax" maxlength="10" name="itax" placeholder="Enter Income Tax" style="margin-bottom: 10px" type="text" />
+                            </div>
+                        </div>
+                        
+                          <div id="div_id_username" class="form-group required">
+                            <label for="id_username" class="control-label col-md-4  requiredField"> Total Deduction<span class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <input class="input-md  textinput textInput form-control" id="t_dedusct" maxlength="10" name="t_dedusct" placeholder="Enter Total Deduction" style="margin-bottom: 10px" type="text" />
+                            </div>
+                        </div>
+                        
+                           <div id="div_id_username" class="form-group required">
+                            <label for="id_username" class="control-label col-md-4  requiredField"> Net Salary<span class="asteriskField">*</span> </label>
+                            <div class="controls col-md-8 ">
+                                <input class="input-md  textinput textInput form-control" id="netsal" maxlength="10" name="netsal" placeholder="Enter Net Salary" style="margin-bottom: 10px" type="text" />
+                            </div>
+                        </div>
+                        
+                       
+                        <div class="form-group"> 
+                          
+                            <div class="controls col-md-12 ">
+                            			<button class="btn-btn-success"   type="submit">REGISTER</button>
+                                 </div>
+                        </div> 
+                          </form>
+                       <br> <br>
+                       
+                        <div class="form-group"> 
+                            <div class="aab controls col-md-4 "></div>
+                            <div class="controls col-md-8 ">
+                                <input type="submit" name="registration" value="Update" class="btn btn-primary btn btn-info" id="submit-id-signup" />
+                               &nbsp; &nbsp;  <input type="button" name="Signup" value="Delete" class="btn btn btn-primary" id="button-id-signup" />
+                            </div>
+                        </div> 
+                            
+            
+            </div>
+        </div>
+    </div> 
+</div>
+        </div>
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------java    Scrip-----------------------------------------
+
+
+
+  $(document).ready(function(){
+	  
+	  $("#da").blur(function(){
+		  
+		  var a= $("#bsalary").val();
+		  var b=$("#hra").val();
+		  var c=$("#da").val();
+		  
+		  var sum1 = parseInt(a)+parseInt(b)+parseInt(c);
+		  $("#total").val(sum1);
+	  });
+	  
+  });
+  
+  $(document).ready(function(){
+	  
+	  $("#itax").blur(function(){
+		  
+		  var a=$("#pf").val();
+		  var b=$("#ptax").val();
+		  var c=$("#itax").val();
+		  
+		  var sum2 = parseInt(a)+parseInt(b)+parseInt(c);
+		  $("#t_dedusct").val(sum2);
+		  
+		  var last = $("#total").val();
+		  var ans = parseInt(last)-parseInt(sum2);
+		  
+		  $("#netsal").val(ans);
+	  		
+	  });
+	  
+  });
+  
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+Employee Assignment
+
+ 
+  <script type="text/javascript">
+  
+  $(window).on("load",function(){
+	  
+	  
+	  
+	  $("#EmplyeeForm").hide()
+	  $("#StudentForm").hide();
+	  $("#EmpTable").show();
+	  $("#AboutPage").hide();
+	  
+  });
+  
+  $(document).ready(function(){
+	  
+	  $("#Emplyeeid").click(function(){
+		  
+		  $("#EmplyeeForm").show()
+		  $("#StudentForm").hide();
+		  $("#EmpTable").hide();
+		  $("#AboutPage").hide();
+	  });
+	  
+  });
+  
+$(document).ready(function(){
+	  
+	  $("#Studentid").click(function(){
+		  
+		  $("#EmplyeeForm").hide()
+		  $("#StudentForm").show();
+		  $("#EmpTable").hide();
+		  $("#AboutPage").hide();
+	  });
+	  
+  });
+  
+$(document).ready(function(){
+	  
+	  $("#Tableid").click(function(){
+		  
+		  $("#EmplyeeForm").hide()
+		  $("#StudentForm").hide();
+		  $("#EmpTable").show();
+		  $("#AboutPage").hide();
+	  });
+	  
+});
+
+$(document).ready(function(){
+	  
+	  $("#Aboutid").click(function(){
+		  
+		  $("#EmplyeeForm").hide()
+		  $("#StudentForm").hide();
+		  $("#EmpTable").hide();
+		  $("#AboutPage").show();
+	  });
+	  
+});
+  
+  
+  $(document).ready(function(){
+	  
+	  $("#da").blur(function(){
+		  
+		  var a= $("#bsalary").val();
+		  var b=$("#hra").val();
+		  var c=$("#da").val();
+		  
+		  var sum1 = parseInt(a)+parseInt(b)+parseInt(c);
+		  $("#total").val(sum1);
+	  });
+	  
+  });
+  
+  $(document).ready(function(){
+	  
+	  $("#itax").blur(function(){
+		  
+		  var a=$("#pf").val();
+		  var b=$("#ptax").val();
+		  var c=$("#itax").val();
+		  
+		  var sum2 = parseInt(a)+parseInt(b)+parseInt(c);
+		  $("#t_dedusct").val(sum2);
+		  
+		  var last = $("#total").val();
+		  var ans = parseInt(last)-parseInt(sum2);
+		  
+		  $("#netsal").val(ans);
+	  		
+	  });
+	  
+  });
+  
+  </script>
+  
+
+
+________________________________________________________________________
+
+
+
+	<div class="p-4 pt-5">
+		  		<h1><a href="index.html" class="logo">Vedant</a></h1>
+	        <ul class="list-unstyled components mb-5">
+	          <li>
+	              <a href="#" id="Emplyeeid">Employee</a>
+	          </li>
+	          <li>
+	              <a href="#" id="Studentid">Student</a>
+	          </li>
+	          <li>
+	              <a href="getEmpData" id="Tableid">Table</a>
+	          </li>
+	          <li>
+	              <a href="#" id="Aboutid">About</a>
+	          </li>
+	          <li>
+              </ul>
+
+
+
+_______________________________________________________________________________
+
+        <div id="EmplyeeForm">
+      <div class="container">    
+            
+------------------------------
+
+
+	     <div id="StudentForm">
+
+-------------------------------------------
+
+
+
+	  <div id="EmpTable">
+
+
+--------------------------------------------
+
+
+  <c:forEach var="elist" items="${elist}">
+
+
+ <script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+
+
+---------------------------------------------------------
+
+
+ <table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Emp id</th>
+      <th>Name</th>
+      <th>Address</th>
+      <th>Mobile No.</th>
+      <th>Basic Salary</th>
+      <th>Net Salary</th>
+    </tr>
+  </thead>
+  <tbody>
+  <c:forEach var="elist" items="${elist}">
+    <tr>
+      <th scope="row">${elist.empid}</th>
+      <td>${elist.name}</td>
+      <td>${elist.address}</td>
+      <td>${elist.mobile}</td>
+       <td>${elist.bsalary}</td>
+      <td>${elist.netsal}</td>
+    </tr>
+    </c:forEach>
+    </tbody>
+</table>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------  Validation  ---------------------------------------------
+
+
+email :- pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+
+Password :- pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+  title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------Simple Login Up Form---------------------------------------
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+
+
+<style type="text/css">
+
+body{
+    background-color:#5286F3;
+    font-size:14px;
+    color:#fff;
+}
+.simple-login-container{
+    width:300px;
+    max-width:100%;
+    margin:50px auto;
+}
+.simple-login-container h2{
+    text-align:center;
+    font-size:20px;
+}
+
+.simple-login-container .btn-login{
+    background-color:#FF5964;
+    color:#fff;
+}
+a{
+    color:#fff;
+}
+
+</style>
+</head>
+<body>
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="simple-login-container">
+    <h2>Login Form</h2>
+    <form action="loginacces" method="post">
+    
+    <div class="row">
+        <div class="col-md-12 form-group">
+            <input type="text" name="username" class="form-control" placeholder="Username">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 form-group">
+            <input type="password" name="password" placeholder="Enter your Password" class="form-control">
+        </div>
+    </div>
+    <div class="row">
+          <div class="col-md-12 form-group">
+         <a href="getEmpData">  <button type="submit" class="btn btn-block btn-success" > Log In</button></a>
+        </div>
+         
+    </div>
+    </form>
+    <div class="row">
+        <div class="col-md-6 form-group">
+          <a href="newRegistation">  <input type="button"  value="New Register" class="btn btn-block btn-login" > </a>
+        </div>
+        
+          <div class="col-md-6 form-group">
+            <input type="button" value="Exit" class="btn btn-block btn-login" >
+        </div>
+         
+    </div>
+  
+</div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------Get Data From JQary -----------------------------
+
+
+<script type="text/javascript">
+$("#uname").blur(function() {
+	
+	$("#email").load("/getEmail/"+$("#uname").val());
+	
+});	
+
+
+----------------------
+
+@RequestMapping(value = "/getEmail/{uname}")
+public String GetEmail(@PathVariable String uname, Model model)
+{
+	String email = dao.GetEmail(uname);
+	model.addAttribute("email", email);
+return 	"getemail";
+}
+
+-------------------------------
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+
+${email}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
